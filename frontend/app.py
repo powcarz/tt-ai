@@ -13,6 +13,7 @@ _API_BASE_URL = os.getenv("REVENUE_AGENT_API_URL", "http://localhost:8000/api")
 _STEP_LABELS: dict[str, str] = {
     "pre_analysis": "Pre-Analysis",
     "llm_decision": "LLM Decision",
+    "human_review": "Human Review",
 }
 
 
@@ -34,6 +35,9 @@ def _format_trace_step(step: dict) -> str:
             parts.append("Produced final response.")
             if step.get("content_preview"):
                 parts.append(f"\n{step['content_preview']}")
+
+    elif step_type == "human_review":
+        parts.append(step.get("content_preview", "Human review step."))
 
     return "\n".join(parts) if parts else json.dumps(step, indent=2)
 
@@ -83,6 +87,79 @@ def _format_llm_steps(llm_steps: list[dict]) -> str:
     return "\n\n".join(chunks)
 
 
+def _render_reasoning_trace(reasoning_trace: list[dict]) -> None:
+    """Schedule rendering of reasoning trace steps as collapsible blocks.
+
+    Returns a list of coroutines; caller should await them.
+    """
+    if not reasoning_trace:
+        return []
+
+    tool_steps = [s for s in reasoning_trace if s.get("step") in {"tool_call", "tool_result"}]
+    llm_steps = [s for s in reasoning_trace if s.get("step") == "llm_decision"]
+    other_steps = [
+        s
+        for s in reasoning_trace
+        if s.get("step") not in {"tool_call", "tool_result", "llm_decision"}
+    ]
+
+    coros = []
+
+    async def _render():
+        for trace_step in other_steps:
+            step_type = trace_step.get("step", "unknown")
+            label = _STEP_LABELS.get(step_type, step_type)
+            async with cl.Step(name=label) as step:
+                step.output = _format_trace_step(trace_step)
+
+        if llm_steps:
+            async with cl.Step(name="LLM Decisions") as step:
+                step.output = _format_llm_steps(llm_steps)
+
+        if tool_steps:
+            async with cl.Step(name="Tool Usage") as step:
+                step.output = _format_tool_steps(tool_steps)
+
+    return _render()
+
+
+def _format_pending_actions(pending_actions: list[dict]) -> str:
+    """Format pending sandbox actions for display in the approval prompt."""
+    if not pending_actions:
+        return ""
+    lines = []
+    for action in pending_actions:
+        tool = action.get("tool", "unknown")
+        args = action.get("args", {})
+        lines.append(f"- **{tool}** with `{json.dumps(args, default=str)}`")
+    return "\n".join(lines)
+
+def _format_audit_log_table(entries: list[dict]) -> str:
+    """Format audit log entries as a markdown table."""
+    if not entries:
+        return "No audit log entries found."
+
+    rows = []
+    for entry in entries:
+        action = str(entry.get("action", ""))
+        result_id = str(entry.get("result_id", ""))
+        timestamp = str(entry.get("timestamp", ""))
+        details = json.dumps(entry.get("details", {}), default=str)
+        rows.append(f"| {action} | {result_id} | {timestamp} | `{details}` |")
+
+    header = "| Action | Result ID | Timestamp | Details |"
+    separator = "| --- | --- | --- | --- |"
+    return "\n".join([header, separator, *rows])
+
+
+async def _call_api(payload: dict) -> dict:
+    """Call the agent API and return the JSON response."""
+    async with httpx.AsyncClient(timeout=120.0) as client:
+        resp = await client.post(f"{_API_BASE_URL}/chat", json=payload)
+    resp.raise_for_status()
+    return resp.json()
+
+
 @cl.on_chat_start
 async def on_chat_start():
     """Initialize a new chat session."""
@@ -113,6 +190,10 @@ I'm an AI financial detective that helps investigate billing anomalies and reven
 - "Can you check if there are any revenue leakage issues with plan P-12345?"
 - "Show me all invoices for Global Tech Ltd"
 - "What's the status of plan P-67890?"
+
+**Audit Log Viewer:**
+- Open `/api/audit-log/view` in your browser
+- Or type `/audit` in chat
 """
     ).send()
 
@@ -121,53 +202,105 @@ I'm an AI financial detective that helps investigate billing anomalies and reven
 async def on_message(message: cl.Message):
     """Handle incoming user messages."""
     thread_id = cl.user_session.get("thread_id", "default")
+    normalized_text = message.content.strip().lower()
+
+    if normalized_text in {"/audit", "/audit-log"}:
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                audit_response = await client.get(f"{_API_BASE_URL}/audit-log")
+            audit_response.raise_for_status()
+            entries = audit_response.json()
+        except Exception as e:
+            await cl.Message(
+                content=f"Unable to load audit log: {str(e)}"
+            ).send()
+            return
+
+        await cl.Message(
+            content=_format_audit_log_table(entries)
+        ).send()
+        return
 
     # Show thinking indicator
     msg = cl.Message(content="")
     await msg.send()
 
     try:
-        # Run the agent via FastAPI
-        async with httpx.AsyncClient(timeout=120.0) as client:
-            api_response = await client.post(
-                f"{_API_BASE_URL}/chat",
-                json={"message": message.content, "thread_id": thread_id},
-            )
-        api_response.raise_for_status()
-        response_payload = api_response.json()
+        response_payload = await _call_api(
+            {"message": message.content, "thread_id": thread_id},
+        )
         response = response_payload.get("response", "")
         reasoning_trace = response_payload.get("reasoning_trace", [])
+        needs_approval = response_payload.get("needs_approval", False)
+        pending_actions = response_payload.get("pending_actions", [])
 
-        # Render reasoning trace as expandable steps.
-        # Use only generic labels as step names so Chainlit doesn't try
-        # to fetch a unique avatar per tool name (which causes 400 spam).
-        if reasoning_trace:
-            tool_steps = [s for s in reasoning_trace if s.get("step") in {"tool_call", "tool_result"}]
-            llm_steps = [s for s in reasoning_trace if s.get("step") == "llm_decision"]
-            other_steps = [
-                s
-                for s in reasoning_trace
-                if s.get("step") not in {"tool_call", "tool_result", "llm_decision"}
-            ]
+        # Render reasoning trace as expandable steps
+        render = _render_reasoning_trace(reasoning_trace)
+        if render:
+            await render
 
-            for trace_step in other_steps:
-                step_type = trace_step.get("step", "unknown")
-                label = _STEP_LABELS.get(step_type, step_type)
+        if needs_approval:
+            # Show agent response (if any) before the approval prompt
+            if response:
+                msg.content = response
+                await msg.update()
 
-                async with cl.Step(name=label) as step:
-                    step.output = _format_trace_step(trace_step)
+            # Present approval prompt with action buttons
+            actions_text = _format_pending_actions(pending_actions)
+            res = await cl.AskActionMessage(
+                content=(
+                    f"**Sandbox modification requires your approval:**\n{actions_text}"
+                ),
+                actions=[
+                    cl.Action(
+                        name="approve",
+                        value="approve",
+                        label="Approve",
+                    ),
+                    cl.Action(
+                        name="reject",
+                        value="reject",
+                        label="Reject",
+                    ),
+                ],
+            ).send()
 
-            if llm_steps:
-                async with cl.Step(name="LLM Decisions") as step:
-                    step.output = _format_llm_steps(llm_steps)
+            # Process the user's decision
+            if res:
+                action_name = (
+                    res.get("name") if isinstance(res, dict)
+                    else getattr(res, "name", "reject")
+                )
+                is_approved = action_name == "approve"
 
-            if tool_steps:
-                async with cl.Step(name="Tool Usage") as step:
-                    step.output = _format_tool_steps(tool_steps)
+                # Show processing indicator
+                result_msg = cl.Message(content="")
+                await result_msg.send()
 
-        # Update the message with the response
-        msg.content = response
-        await msg.update()
+                # Resume the agent graph
+                resume_payload = await _call_api(
+                    {"thread_id": thread_id, "approve": is_approved},
+                )
+                resume_response = resume_payload.get("response", "")
+                resume_trace = resume_payload.get("reasoning_trace", [])
+
+                # Render reasoning trace from the resume
+                render = _render_reasoning_trace(resume_trace)
+                if render:
+                    await render
+
+                result_msg.content = resume_response
+                await result_msg.update()
+            else:
+                # Timeout — no action taken
+                timeout_msg = cl.Message(
+                    content="Approval timed out. The action was **not** applied."
+                )
+                await timeout_msg.send()
+        else:
+            # Normal response (no approval needed)
+            msg.content = response
+            await msg.update()
 
     except Exception as e:
         msg.content = f"I encountered an error: {str(e)}\n\nPlease try again or rephrase your question."

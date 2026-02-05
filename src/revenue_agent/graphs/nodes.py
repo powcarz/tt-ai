@@ -4,10 +4,14 @@ from datetime import datetime, timezone
 from typing import Any, Literal
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
+from langgraph.types import interrupt
 
 from revenue_agent.agents.prompts.system import SYSTEM_PROMPT
 from revenue_agent.agents.revenue_agent import create_agent, get_tools
 from revenue_agent.schemas.state import AgentState
+
+# Tools that modify the sandbox and require explicit human approval
+SANDBOX_TOOL_NAMES: frozenset[str] = frozenset({"apply_action", "rollback_action"})
 
 
 def _now_iso() -> str:
@@ -52,6 +56,72 @@ def agent_node(state: AgentState) -> AgentState:
     return {
         "messages": [response],
         "reasoning_trace": [trace_entry],
+    }
+
+
+def human_review_node(state: AgentState) -> AgentState:
+    """Pause for human approval before executing sandbox-modifying tools.
+
+    Uses LangGraph's interrupt() to pause the graph and wait for
+    explicit human confirmation before applying or rolling back
+    sandbox actions.
+    """
+    messages = state["messages"]
+    last_message = messages[-1]
+
+    if not isinstance(last_message, AIMessage) or not last_message.tool_calls:
+        return {"messages": [], "reasoning_trace": []}
+
+    # Extract sandbox tool call details for the approval prompt
+    sandbox_calls = [
+        tc for tc in last_message.tool_calls
+        if tc["name"] in SANDBOX_TOOL_NAMES
+    ]
+
+    approval_details = {
+        "pending_tool_calls": [
+            {"tool": tc["name"], "args": tc["args"]}
+            for tc in sandbox_calls
+        ],
+        "message": "The agent wants to modify the sandbox. Please approve or reject.",
+    }
+
+    # Pause the graph — returns the value from Command(resume=...) when continued
+    human_decision = interrupt(approval_details)
+
+    if human_decision == "reject":
+        # Create rejection ToolMessages for ALL tool calls so the LLM
+        # receives a response for every pending call
+        rejection_messages = [
+            ToolMessage(
+                content="Action rejected by the user. Do not retry without new explicit approval.",
+                tool_call_id=tc["id"],
+                name=tc["name"],
+            )
+            for tc in last_message.tool_calls
+        ]
+        return {
+            "messages": rejection_messages,
+            "reasoning_trace": [{
+                "step": "human_review",
+                "node": "human_review",
+                "timestamp": _now_iso(),
+                "content_preview": "User rejected the proposed action.",
+                "is_error": False,
+            }],
+        }
+
+    # Approved — continue to tool execution (no messages added, so the
+    # AIMessage with tool_calls remains as the last message for tool_node)
+    return {
+        "messages": [],
+        "reasoning_trace": [{
+            "step": "human_review",
+            "node": "human_review",
+            "timestamp": _now_iso(),
+            "content_preview": "User approved the proposed action.",
+            "is_error": False,
+        }],
     }
 
 
@@ -142,14 +212,35 @@ def tool_node(state: AgentState) -> AgentState:
     }
 
 
-def should_continue(state: AgentState) -> Literal["tools", "end"]:
-    """Determine if we should continue to tools or end."""
+def should_continue(state: AgentState) -> Literal["tools", "human_review", "end"]:
+    """Determine if we should continue to tools, require human approval, or end."""
     messages = state["messages"]
     last_message = messages[-1]
 
-    # If the last message has tool calls, continue to tools
     if isinstance(last_message, AIMessage) and last_message.tool_calls:
+        # Route sandbox-modifying tool calls through human review
+        if any(tc["name"] in SANDBOX_TOOL_NAMES for tc in last_message.tool_calls):
+            return "human_review"
         return "tools"
 
     # Otherwise, end the conversation turn
     return "end"
+
+
+def after_human_review(state: AgentState) -> Literal["tools", "agent"]:
+    """Route after human review: to tools if approved, back to agent if rejected.
+
+    When the user approves, no messages are added so the AIMessage with
+    tool_calls is still the last message — route to tools for execution.
+    When the user rejects, rejection ToolMessages are added — route back
+    to agent so it can acknowledge the rejection.
+    """
+    messages = state["messages"]
+    last_message = messages[-1] if messages else None
+
+    # Rejection ToolMessages were added → route back to agent
+    if isinstance(last_message, ToolMessage):
+        return "agent"
+
+    # Approved → proceed to tool execution
+    return "tools"

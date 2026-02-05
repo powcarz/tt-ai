@@ -143,8 +143,73 @@ Reasoning part now shoing all steps in separate rows, colapse it with expaning p
 | `frontend/app.py` | Grouped tool_call/tool_result into one step and llm_decision into another |
 
 ---
+### Prompt 9: Add Human-in-the-Loop Interrupt with `interrupt_before`
 
-### Prompt 9: Senior Architect Code Review and Refactor
+**Prompt**:
+
+```
+The human in the loop are based on the prompt rule based. Make a hard-stop based on interrupt_before before using a tool functions.
+```
+
+**Result**: Implemented LangGraph's `interrupt()` mechanism to enforce hard human approval gates before sandbox-modifying tools (`apply_action`, `rollback_action`) execute. This replaces the soft prompt-based approval with a graph-level checkpoint that pauses execution and requires explicit user approval or rejection.
+
+**Changes**:
+
+| File | Change |
+| --- | --- |
+| `graphs/nodes.py` | Added `SANDBOX_TOOL_NAMES`, `human_review_node` (uses `interrupt()` to pause), `after_human_review` routing function; updated `should_continue` to route sandbox tools through `"human_review"` |
+| `graphs/revenue_graph.py` | Updated graph structure with `human_review` node and conditional edges; added `_get_interrupt_details` to inspect pending interrupts; extended `AgentResult` with `needs_approval` and `pending_actions` fields; added `resume_agent` function to resume with `Command(resume="approve"|"reject")`; `run_agent` now auto-rejects stale interrupts before processing new messages |
+| `graphs/__init__.py` | Exported `resume_agent` |
+| `api/routes.py` | Extended `ChatRequest` with optional `approve: bool` field; extended `ChatResponse` with `needs_approval` and `pending_actions` fields; updated `chat` endpoint to route to `resume_agent` when `approve` is set |
+| `frontend/app.py` | Added approval UI using `cl.AskActionMessage` with **Approve / Reject** buttons; when `needs_approval=True`, displays pending actions and waits for user decision; calls resume API with user's choice and displays the result |
+
+**Architecture**:
+
+```
+┌──────────┐
+│  agent   │ ← entry point
+└────┬─────┘
+     │ should_continue
+     ├─── "tools" ──────────► tools ──► agent (loop)
+     ├─── "human_review" ──► human_review (interrupt here)
+     │                         │ after_human_review
+     │                         ├── "tools" ──► tools ──► agent (approved)
+     │                         └── "agent" ──► agent (rejected)
+     └─── "end" ──────────► END
+```
+
+**Key Benefits**:
+- **Hard enforcement**: Graph execution pauses at `interrupt()` — tools cannot execute without explicit approval
+- **Stateful**: Approval state persists in the checkpointer; user can approve/reject in a separate API call
+- **Clean separation**: Approval logic is in the graph structure, not just in prompt instructions
+- **Better UX**: Frontend shows action details with clear Approve/Reject buttons
+
+---
+
+### Prompt 10: Audit Log Viewer Endpoint + Chainlit Subpage
+
+**Prompt**:
+
+```
+Add the log viewer endpotin and maybe subpage to chainlint. The endpoint for audit is already created in @src/revenue_agent/api/routes.py @routes.py (109-119) 
+
+Make simple log viewer subpage, that can be dataframe/table or some different readable form for human. 
+Also add that prompt to @candidate_prompts.md
+```
+
+**Result**: Added an HTML audit-log viewer endpoint and a simple Chainlit audit log viewer flow. The HTML endpoint renders a readable table for humans, and the chat UI now supports a `/audit` command plus a quick link in the welcome message.
+
+**Changes**:
+
+| File | Change |
+| --- | --- |
+| `api/routes.py` | Added `/api/audit-log/view` HTML endpoint that renders a basic table; added `_render_audit_log_html()` helper |
+| `frontend/app.py` | Added `/audit` command to render a markdown table; added welcome link to `/api/audit-log/view` |
+
+---
+
+
+### Prompt 11: Senior Architect Code Review and Refactor
 
 **Prompt**:
 
@@ -162,3 +227,7 @@ Output: Briefly list the "Why," then provide the refactored, clean-code version.
 **Result**: Refactored shared helpers, reduced duplication, improved filtering/indexing, and clarified internal naming without changing tool function names.
 
 ---
+
+
+
+
