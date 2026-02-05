@@ -129,7 +129,22 @@ apply_action and ID of ACT?
 
 ---
 
-### Prompt 8: Senior Architect Code Review and Refactor
+### Prompt 8: Collapse Reasoning Trace Steps
+
+**Prompt**:
+```
+Reasoning part now shoing all steps in separate rows, colapse it with expaning possibility. Do it for tools usage and llm decisions.
+```
+
+**Result**: Collapsed all tool activity into a single expandable "Tool Usage" block and all LLM decisions into a single "LLM Decisions" block in Chainlit. This keeps the reasoning trace readable while still exposing full detail when expanded.
+
+| File | Change |
+| --- | --- |
+| `frontend/app.py` | Grouped tool_call/tool_result into one step and llm_decision into another |
+
+---
+
+### Prompt 9: Senior Architect Code Review and Refactor
 
 **Prompt**:
 
