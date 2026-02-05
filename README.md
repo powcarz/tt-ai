@@ -227,22 +227,57 @@ fos/
 
 ## Running the Application
 
-### Option 1: Chainlit Frontend (Recommended)
+### Quick Start (Recommended)
+
+Use the provided script to run both FastAPI backend and Chainlit frontend on a single port:
 
 ```bash
-cd frontend
-chainlit run app.py
+python scripts/run_all.py
 ```
 
-Then open http://localhost:8000 in your browser.
+This will start the application on **port 8000** with:
+- **Chat UI**: http://localhost:8000/chat
+- **API Docs**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/api/health
 
-### Option 2: FastAPI Backend Only
+The script automatically configures the environment and runs everything in a single process using Chainlit's `mount_chainlit()` integration.
+
+### Alternative: Run Backend Only
+
+If you only need the FastAPI backend without the UI:
 
 ```bash
 python -m revenue_agent.main
 ```
 
 API documentation available at http://localhost:8000/docs
+
+---
+
+## Sandbox Management
+
+The sandbox stores all applied actions (make-good invoices, credit memos, plan amendments) in writable JSON files under `data/sandbox/`. This allows you to test the agent's actions without modifying the original read-only data.
+
+### Reset Sandbox to Clean State
+
+To clear all applied actions and start fresh:
+
+```bash
+python scripts/reset_sandbox.py
+```
+
+This script resets the following files to empty arrays:
+- `data/sandbox/applied_invoices.json` - Make-good invoices created by the agent
+- `data/sandbox/applied_credit_memos.json` - Credit memos issued for overbilling
+- `data/sandbox/applied_amendments.json` - Plan amendments applied
+- `data/sandbox/audit_log.json` - Complete audit trail of all actions
+
+**When to reset:**
+- Before running test scenarios from `candidate_prompts.md`
+- After testing to return to a clean state
+- When demonstrating the agent to stakeholders
+
+**Note**: Resetting the sandbox does NOT affect the original data files (`billing_plans.json`, `invoices.json`, etc.) - those remain immutable.
 
 ## Available Tools
 
