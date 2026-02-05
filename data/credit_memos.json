@@ -1,0 +1,12 @@
+[
+  {
+    "id": "CM-001",
+    "invoice_id": "INV-003",
+    "plan_id": "P-67890",
+    "customer_id": "CUST-002",
+    "amount": 2000.00,
+    "currency": "USD",
+    "reason": "Overbilling correction - invoice was in USD instead of EUR",
+    "issue_date": "2024-09-15"
+  }
+]

@@ -1,0 +1,156 @@
+[
+  {
+    "id": "INV-001",
+    "plan_id": "P-12345",
+    "customer_name": "Acme Corporation",
+    "amount": 10000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-09-01",
+    "billing_period_end": "2024-09-30",
+    "issue_date": "2024-09-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-002",
+    "plan_id": "P-12345",
+    "customer_name": "Acme Corporation",
+    "amount": 10000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-11-01",
+    "billing_period_end": "2024-11-30",
+    "issue_date": "2024-11-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-003",
+    "plan_id": "P-67890",
+    "customer_name": "Global Tech Ltd",
+    "amount": 27000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-09-01",
+    "billing_period_end": "2024-09-30",
+    "issue_date": "2024-09-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-004",
+    "plan_id": "P-67890",
+    "customer_name": "Global Tech Ltd",
+    "amount": 25000.00,
+    "currency": "EUR",
+    "billing_period_start": "2024-10-01",
+    "billing_period_end": "2024-10-31",
+    "issue_date": "2024-10-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-005",
+    "plan_id": "P-67890",
+    "customer_name": "Global Tech Ltd",
+    "amount": 25000.00,
+    "currency": "EUR",
+    "billing_period_start": "2024-11-01",
+    "billing_period_end": "2024-11-30",
+    "issue_date": "2024-11-01",
+    "status": "issued"
+  },
+  {
+    "id": "INV-006",
+    "plan_id": "P-11111",
+    "customer_name": "StartupXYZ Inc",
+    "amount": 5000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-09-01",
+    "billing_period_end": "2024-09-30",
+    "issue_date": "2024-09-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-007",
+    "plan_id": "P-11111",
+    "customer_name": "StartupXYZ Inc",
+    "amount": 5000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-10-01",
+    "billing_period_end": "2024-10-31",
+    "issue_date": "2024-10-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-008",
+    "plan_id": "P-11111",
+    "customer_name": "StartupXYZ Inc",
+    "amount": 5000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-11-01",
+    "billing_period_end": "2024-11-30",
+    "issue_date": "2024-11-01",
+    "status": "issued"
+  },
+  {
+    "id": "INV-009",
+    "plan_id": "P-22222",
+    "customer_name": "Enterprise Solutions Co",
+    "amount": 90000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-01-01",
+    "billing_period_end": "2024-03-31",
+    "issue_date": "2024-01-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-010",
+    "plan_id": "P-22222",
+    "customer_name": "Enterprise Solutions Co",
+    "amount": 90000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-04-01",
+    "billing_period_end": "2024-06-30",
+    "issue_date": "2024-04-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-011",
+    "plan_id": "P-22222",
+    "customer_name": "Enterprise Solutions Co",
+    "amount": 90000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-07-01",
+    "billing_period_end": "2024-09-30",
+    "issue_date": "2024-07-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-012",
+    "plan_id": "P-33333",
+    "customer_name": "British Innovations PLC",
+    "amount": 18000.00,
+    "currency": "GBP",
+    "billing_period_start": "2024-09-01",
+    "billing_period_end": "2024-09-30",
+    "issue_date": "2024-09-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-013",
+    "plan_id": "P-33333",
+    "customer_name": "British Innovations PLC",
+    "amount": 15000.00,
+    "currency": "GBP",
+    "billing_period_start": "2024-10-01",
+    "billing_period_end": "2024-10-31",
+    "issue_date": "2024-10-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-014",
+    "plan_id": "P-33333",
+    "customer_name": "British Innovations PLC",
+    "amount": 15000.00,
+    "currency": "GBP",
+    "billing_period_start": "2024-11-01",
+    "billing_period_end": "2024-11-30",
+    "issue_date": "2024-11-01",
+    "status": "issued"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "P-12345",
+    "customer_id": "CUST-001",
+    "customer_name": "Acme Corporation",
+    "amount": 10000.00,
+    "currency": "USD",
+    "cadence": "monthly",
+    "start_date": "2024-08-01",
+    "end_date": null,
+    "entitlements": ["Standard Support", "API Access", "10 Users"],
+    "is_active": true
+  },
+  {
+    "id": "P-67890",
+    "customer_id": "CUST-002",
+    "customer_name": "Global Tech Ltd",
+    "amount": 25000.00,
+    "currency": "EUR",
+    "cadence": "monthly",
+    "start_date": "2024-07-01",
+    "end_date": null,
+    "entitlements": ["Premium Support", "API Access", "Unlimited Users", "Custom Integrations"],
+    "is_active": true
+  },
+  {
+    "id": "P-11111",
+    "customer_id": "CUST-003",
+    "customer_name": "StartupXYZ Inc",
+    "amount": 5000.00,
+    "currency": "USD",
+    "cadence": "monthly",
+    "start_date": "2024-09-01",
+    "end_date": null,
+    "entitlements": ["Basic Support", "API Access", "5 Users"],
+    "is_active": true
+  },
+  {
+    "id": "P-22222",
+    "customer_id": "CUST-004",
+    "customer_name": "Enterprise Solutions Co",
+    "amount": 90000.00,
+    "currency": "USD",
+    "cadence": "quarterly",
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "entitlements": ["Enterprise Support", "API Access", "Unlimited Users", "SLA 99.9%", "Dedicated Account Manager"],
+    "is_active": true
+  },
+  {
+    "id": "P-33333",
+    "customer_id": "CUST-005",
+    "customer_name": "British Innovations PLC",
+    "amount": 15000.00,
+    "currency": "GBP",
+    "cadence": "monthly",
+    "start_date": "2024-06-01",
+    "end_date": null,
+    "entitlements": ["Premium Support", "API Access", "25 Users"],
+    "is_active": true
+  }
+]

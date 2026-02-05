@@ -1,0 +1,89 @@
+{
+  "base_currency": "USD",
+  "rates": [
+    {
+      "from_currency": "EUR",
+      "to_currency": "USD",
+      "rate": 1.08,
+      "effective_date": "2024-09-01"
+    },
+    {
+      "from_currency": "USD",
+      "to_currency": "EUR",
+      "rate": 0.926,
+      "effective_date": "2024-09-01"
+    },
+    {
+      "from_currency": "GBP",
+      "to_currency": "USD",
+      "rate": 1.27,
+      "effective_date": "2024-09-01"
+    },
+    {
+      "from_currency": "USD",
+      "to_currency": "GBP",
+      "rate": 0.787,
+      "effective_date": "2024-09-01"
+    },
+    {
+      "from_currency": "EUR",
+      "to_currency": "GBP",
+      "rate": 0.857,
+      "effective_date": "2024-09-01"
+    },
+    {
+      "from_currency": "GBP",
+      "to_currency": "EUR",
+      "rate": 1.167,
+      "effective_date": "2024-09-01"
+    },
+    {
+      "from_currency": "EUR",
+      "to_currency": "USD",
+      "rate": 1.09,
+      "effective_date": "2024-10-01"
+    },
+    {
+      "from_currency": "USD",
+      "to_currency": "EUR",
+      "rate": 0.917,
+      "effective_date": "2024-10-01"
+    },
+    {
+      "from_currency": "GBP",
+      "to_currency": "USD",
+      "rate": 1.30,
+      "effective_date": "2024-10-01"
+    },
+    {
+      "from_currency": "USD",
+      "to_currency": "GBP",
+      "rate": 0.769,
+      "effective_date": "2024-10-01"
+    },
+    {
+      "from_currency": "EUR",
+      "to_currency": "USD",
+      "rate": 1.07,
+      "effective_date": "2024-11-01"
+    },
+    {
+      "from_currency": "USD",
+      "to_currency": "EUR",
+      "rate": 0.935,
+      "effective_date": "2024-11-01"
+    },
+    {
+      "from_currency": "GBP",
+      "to_currency": "USD",
+      "rate": 1.25,
+      "effective_date": "2024-11-01"
+    },
+    {
+      "from_currency": "USD",
+      "to_currency": "GBP",
+      "rate": 0.80,
+      "effective_date": "2024-11-01"
+    }
+  ]
+}

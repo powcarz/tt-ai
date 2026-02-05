@@ -1,0 +1,146 @@
+[
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-BAFE6A",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing August 2024 billing",
+    "timestamp": "2026-02-05T21:09:27.812022"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-F0BBD8",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing October 2024 billing",
+    "timestamp": "2026-02-05T21:09:27.816644"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-B4DF63",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing December 2024 billing",
+    "timestamp": "2026-02-05T21:09:27.819293"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-292054",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing January 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.821853"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-27E868",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing February 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.824358"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-C096E8",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing March 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.826910"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-BD7FC8",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing April 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.829257"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-9C1A2E",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing May 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.830972"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-D7F049",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing June 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.832309"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-BC2E8C",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing July 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.834229"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-EE2854",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing August 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.835744"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-753BAE",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing September 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.837054"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-6A01C4",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing October 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.838358"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-076233",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing November 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.839663"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-0791FC",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing December 2025 billing",
+    "timestamp": "2026-02-05T21:09:27.840945"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-5BC557",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing January 2026 billing",
+    "timestamp": "2026-02-05T21:09:27.842361"
+  }
+]
