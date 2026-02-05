@@ -13,8 +13,6 @@ _API_BASE_URL = os.getenv("REVENUE_AGENT_API_URL", "http://localhost:8000/api")
 _STEP_LABELS: dict[str, str] = {
     "pre_analysis": "Pre-Analysis",
     "llm_decision": "LLM Decision",
-    "tool_call": "Tool Call",
-    "tool_result": "Tool Result",
 }
 
 
@@ -37,20 +35,52 @@ def _format_trace_step(step: dict) -> str:
             if step.get("content_preview"):
                 parts.append(f"\n{step['content_preview']}")
 
-    elif step_type == "tool_call":
-        tool = step.get("tool", "unknown")
-        args = step.get("tool_args", {})
-        parts.append(f"**{tool}**(`{json.dumps(args, default=str)}`)")
-
-    elif step_type == "tool_result":
-        tool = step.get("tool", "unknown")
-        is_error = step.get("is_error", False)
-        status = "Error" if is_error else "Success"
-        parts.append(f"**{tool}** -> {status}")
-        if step.get("content_preview"):
-            parts.append(f"\n```\n{step['content_preview']}\n```")
-
     return "\n".join(parts) if parts else json.dumps(step, indent=2)
+
+
+def _format_tool_steps(tool_steps: list[dict]) -> str:
+    """Format all tool steps into one collapsible block."""
+    if not tool_steps:
+        return "No tools were called."
+
+    chunks: list[str] = []
+    for step in tool_steps:
+        step_type = step.get("step", "unknown")
+        tool = step.get("tool", "unknown")
+
+        if step_type == "tool_call":
+            args = step.get("tool_args", {})
+            chunks.append(f"**Call**: `{tool}` with `{json.dumps(args, default=str)}`")
+            continue
+
+        if step_type == "tool_result":
+            is_error = step.get("is_error", False)
+            status = "Error" if is_error else "Success"
+            chunks.append(f"**Result**: `{tool}` → {status}")
+            if step.get("content_preview"):
+                chunks.append(f"```\n{step['content_preview']}\n```")
+            continue
+
+    return "\n\n".join(chunks)
+
+
+def _format_llm_steps(llm_steps: list[dict]) -> str:
+    """Format all LLM decision steps into one collapsible block."""
+    if not llm_steps:
+        return "No LLM decisions recorded."
+
+    chunks: list[str] = []
+    for index, step in enumerate(llm_steps, start=1):
+        tool_calls = step.get("tool_calls", [])
+        if tool_calls:
+            chunks.append(f"**Decision {index}**: Call tools → {', '.join(tool_calls)}")
+            continue
+
+        chunks.append(f"**Decision {index}**: Produced final response")
+        if step.get("content_preview"):
+            chunks.append(step["content_preview"])
+
+    return "\n\n".join(chunks)
 
 
 @cl.on_chat_start
@@ -112,12 +142,28 @@ async def on_message(message: cl.Message):
         # Use only generic labels as step names so Chainlit doesn't try
         # to fetch a unique avatar per tool name (which causes 400 spam).
         if reasoning_trace:
-            for trace_step in reasoning_trace:
+            tool_steps = [s for s in reasoning_trace if s.get("step") in {"tool_call", "tool_result"}]
+            llm_steps = [s for s in reasoning_trace if s.get("step") == "llm_decision"]
+            other_steps = [
+                s
+                for s in reasoning_trace
+                if s.get("step") not in {"tool_call", "tool_result", "llm_decision"}
+            ]
+
+            for trace_step in other_steps:
                 step_type = trace_step.get("step", "unknown")
                 label = _STEP_LABELS.get(step_type, step_type)
 
                 async with cl.Step(name=label) as step:
                     step.output = _format_trace_step(trace_step)
+
+            if llm_steps:
+                async with cl.Step(name="LLM Decisions") as step:
+                    step.output = _format_llm_steps(llm_steps)
+
+            if tool_steps:
+                async with cl.Step(name="Tool Usage") as step:
+                    step.output = _format_tool_steps(tool_steps)
 
         # Update the message with the response
         msg.content = response

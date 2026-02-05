@@ -142,5 +142,293 @@
     "currency": "USD",
     "reason": "Missing January 2026 billing",
     "timestamp": "2026-02-05T21:09:27.842361"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-5DB350",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing August 2024 billing",
+    "timestamp": "2026-02-05T22:00:50.551425"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-6692EB",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing October 2024 billing",
+    "timestamp": "2026-02-05T22:00:50.556021"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-C7E33C",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing December 2024 billing",
+    "timestamp": "2026-02-05T22:00:50.558607"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-B22C3A",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing January 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.560322"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-EC3469",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing February 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.562050"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-086A78",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing March 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.563938"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-13DA0D",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing April 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.565676"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-7F7078",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing May 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.566614"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-12D21B",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing June 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.567429"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-96827C",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing July 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.568404"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-6076A7",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing August 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.569364"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-278C1F",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing September 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.570131"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-3CE66E",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing October 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.570966"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-873F97",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing November 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.572101"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-9814EB",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing December 2025 billing",
+    "timestamp": "2026-02-05T22:00:50.573138"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-C0926F",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing January 2026 billing",
+    "timestamp": "2026-02-05T22:00:50.574161"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-AD1996",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing August 2024 billing",
+    "timestamp": "2026-02-05T22:03:38.903969"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-716F68",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing October 2024 billing",
+    "timestamp": "2026-02-05T22:03:38.911882"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-9DCAAD",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing December 2024 billing",
+    "timestamp": "2026-02-05T22:03:38.915926"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-4E443C",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing January 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.918801"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-3B341B",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing February 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.922720"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-90F591",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing March 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.924895"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-356A41",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing April 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.927344"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-CD1C1B",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing May 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.929501"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-F8F32A",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing June 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.931444"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-405658",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing July 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.933669"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-C72614",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing August 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.935354"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-0B24A8",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing September 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.937068"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-068664",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing October 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.938811"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-F2156A",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing November 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.940500"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-7E577C",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing December 2025 billing",
+    "timestamp": "2026-02-05T22:03:38.942067"
+  },
+  {
+    "action": "apply_make_good_invoice",
+    "result_id": "INV-MG-413FC5",
+    "plan_id": "P-12345",
+    "amount": 10000.0,
+    "currency": "USD",
+    "reason": "Missing January 2026 billing",
+    "timestamp": "2026-02-05T22:03:38.944088"
   }
 ]
