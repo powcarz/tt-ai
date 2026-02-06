@@ -17,6 +17,10 @@ from revenue_agent.graphs.nodes import (
     tool_node,
 )
 from revenue_agent.schemas.state import AgentState, create_initial_state
+from revenue_agent.services.approval_classifier import (
+    ApprovalIntent,
+    classify_approval_intent,
+)
 from revenue_agent.services.preprocessor import preprocess_message
 
 logger = logging.getLogger(__name__)
@@ -260,11 +264,25 @@ async def run_agent(
     graph = get_compiled_graph()
     config = {"configurable": {"thread_id": thread_id}}
 
-    # If there is a pending interrupt from a previous turn, reject it so
-    # we can process the new message cleanly.
+    # If there is a pending interrupt from a previous turn, classify the
+    # incoming message to decide whether to approve, reject, or treat it
+    # as an unrelated new query (auto-reject the stale interrupt first).
     existing_interrupt = await _get_interrupt_details(graph, config)
     if existing_interrupt:
-        logger.info("Clearing stale interrupt for thread %s", thread_id)
+        intent = await classify_approval_intent(message)
+        logger.info(
+            "Pending interrupt on thread %s — classified intent: %s",
+            thread_id,
+            intent.value,
+        )
+
+        if intent == ApprovalIntent.APPROVE:
+            return await resume_agent(thread_id, approve=True)
+        if intent == ApprovalIntent.REJECT:
+            return await resume_agent(thread_id, approve=False)
+
+        # NEW_QUERY — auto-reject the stale interrupt, then process below
+        logger.info("New query while interrupt pending; auto-rejecting for thread %s", thread_id)
         await graph.ainvoke(Command(resume="reject"), config)
 
     # Build messages with preprocessing (Python analysis runs HERE)
@@ -279,6 +297,18 @@ async def run_agent(
     # Check if the graph was interrupted (pending human approval)
     pending_actions = await _get_interrupt_details(graph, config)
     if pending_actions:
+        # If the user's message already expressed approval (e.g. "go ahead",
+        # "I like it"), auto-approve the interrupt so there is no redundant
+        # second confirmation via buttons.
+        intent = await classify_approval_intent(message)
+        if intent == ApprovalIntent.APPROVE:
+            logger.info(
+                "User message already expresses approval — auto-approving "
+                "interrupt on thread %s",
+                thread_id,
+            )
+            return await resume_agent(thread_id, approve=True)
+
         logger.info("Graph interrupted — awaiting approval for %s", pending_actions)
         return _build_result(
             result,
@@ -318,6 +348,16 @@ async def resume_agent(
     logger.info("Resuming thread %s with decision: %s", thread_id, decision)
 
     result = await graph.ainvoke(Command(resume=decision), config)
+
+    # Check if the graph hit another interrupt (e.g. additional apply_action calls)
+    new_pending = await _get_interrupt_details(graph, config)
+    if new_pending:
+        logger.info("Graph interrupted again after resume — awaiting approval for %s", new_pending)
+        return _build_result(
+            result,
+            needs_approval=True,
+            pending_actions=new_pending,
+        )
 
     return _build_result(result)
 

@@ -254,12 +254,12 @@ async def on_message(message: cl.Message):
                 actions=[
                     cl.Action(
                         name="approve",
-                        value="approve",
+                        payload={"action": "approve"},
                         label="Approve",
                     ),
                     cl.Action(
                         name="reject",
-                        value="reject",
+                        payload={"action": "reject"},
                         label="Reject",
                     ),
                 ],
@@ -267,10 +267,11 @@ async def on_message(message: cl.Message):
 
             # Process the user's decision
             if res:
-                action_name = (
-                    res.get("name") if isinstance(res, dict)
-                    else getattr(res, "name", "reject")
-                )
+                # Chainlit 2.x: identify which button was clicked via name
+                if isinstance(res, dict):
+                    action_name = res.get("name", "")
+                else:
+                    action_name = getattr(res, "name", "")
                 is_approved = action_name == "approve"
 
                 # Show processing indicator
