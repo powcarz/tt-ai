@@ -58,5 +58,17 @@
     "end_date": null,
     "entitlements": ["Premium Support", "API Access", "25 Users"],
     "is_active": true
+  },
+  {
+    "id": "P-44444",
+    "customer_id": "CUST-006",
+    "customer_name": "Umbrella Logistics",
+    "amount": 10000.00,
+    "currency": "USD",
+    "cadence": "monthly",
+    "start_date": "2024-09-01",
+    "end_date": null,
+    "entitlements": ["Standard Support", "API Access", "10 Users"],
+    "is_active": true
   }
 ]

@@ -1,12 +1,1 @@
-[
-  {
-    "id": "CM-CB66C7",
-    "invoice_id": "INV-003",
-    "plan_id": "P-67890",
-    "amount": 2.0,
-    "currency": "USD",
-    "reason": "Currency mismatch correction for September 2024 invoice",
-    "issue_date": "2026-02-06",
-    "applied_at": "2026-02-06T12:32:44.179372"
-  }
-]
+[]

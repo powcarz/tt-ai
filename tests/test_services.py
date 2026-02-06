@@ -18,9 +18,11 @@ class TestDataLoader:
         """Test loading billing plans."""
         plans = self.loader.plans
         
-        assert len(plans) == 5
+        assert len(plans) == 6
         assert "P-12345" in plans
         assert plans["P-12345"].customer_name == "Acme Corporation"
+        assert "P-44444" in plans
+        assert plans["P-44444"].customer_name == "Umbrella Logistics"
 
     def test_load_invoices(self):
         """Test loading invoices."""

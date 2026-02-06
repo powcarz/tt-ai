@@ -152,5 +152,38 @@
     "billing_period_end": "2024-11-30",
     "issue_date": "2024-11-01",
     "status": "issued"
+  },
+  {
+    "id": "INV-015",
+    "plan_id": "P-44444",
+    "customer_name": "Umbrella Logistics",
+    "amount": 12000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-09-01",
+    "billing_period_end": "2024-09-30",
+    "issue_date": "2024-09-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-016",
+    "plan_id": "P-44444",
+    "customer_name": "Umbrella Logistics",
+    "amount": 12000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-10-01",
+    "billing_period_end": "2024-10-31",
+    "issue_date": "2024-10-01",
+    "status": "paid"
+  },
+  {
+    "id": "INV-017",
+    "plan_id": "P-44444",
+    "customer_name": "Umbrella Logistics",
+    "amount": 12000.00,
+    "currency": "USD",
+    "billing_period_start": "2024-11-01",
+    "billing_period_end": "2024-11-30",
+    "issue_date": "2024-11-01",
+    "status": "issued"
   }
 ]

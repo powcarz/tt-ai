@@ -185,6 +185,7 @@ I'm an AI financial detective that helps investigate billing anomalies and reven
 - `P-11111` - StartupXYZ Inc ($5,000/month USD)
 - `P-22222` - Enterprise Solutions Co ($90,000/quarter USD)
 - `P-33333` - British Innovations PLC (£15,000/month GBP)
+- `P-44444` - Umbrella Logistics
 
 **Try asking:**
 - "Can you check if there are any revenue leakage issues with plan P-12345?"

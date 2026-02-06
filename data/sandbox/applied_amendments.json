@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": "AMD-20A0AB",
+    "plan_id": "P-44444",
+    "changes": {
+      "amount": 12000
+    },
+    "reason": "Adjusting plan to correct billing discrepancies and ensure accurate future billing.",
+    "applied_at": "2026-02-06T14:36:00.663555"
+  }
+]
