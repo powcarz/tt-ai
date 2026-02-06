@@ -131,9 +131,6 @@ async def _llm_classify(message: str) -> ApprovalIntent:
         return ApprovalIntent.NEW_QUERY
 
 
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
 
 async def classify_approval_intent(message: str) -> ApprovalIntent:
     """Classify whether a user message is an approval, rejection, or new query.

@@ -237,10 +237,6 @@ async def _get_interrupt_details(graph, config: dict) -> list[dict[str, Any]] | 
     return pending_actions if pending_actions else None
 
 
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
-
 async def run_agent(
     message: str,
     thread_id: str = "default",

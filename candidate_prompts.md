@@ -227,7 +227,39 @@ Output: Briefly list the "Why," then provide the refactored, clean-code version.
 **Result**: Refactored shared helpers, reduced duplication, improved filtering/indexing, and clarified internal naming without changing tool function names.
 
 ---
+---
+---
 
+## TODO -
 
+### Before Production
 
+#### Reliability & Data Persistence
 
+- Replace `MemorySaver` in-memory checkpointer with durable storage (e.g., Postgres) for threads, conversation state, and auditability.
+- Move long-term “memory” from in-process state into a **vector DB** (e.g., Postgres + pgvector, Qdrant, Pinecone) with:
+  - Clear schemas for embeddings + metadata (tenant/customer/plan ids)
+  - Deterministic retrieval configuration (top-k, filters, reranking)
+
+#### Evaluation (Quality Gates)
+
+- Build an evaluation harness using **RAGAS** (and/or LLM-as-judge) with:
+  - A curated dataset of “golden” investigations (inputs → expected findings/actions)
+  - Metrics for faithfulness, relevance, and action correctness
+  - CI gating (fail builds on regressions) and reporting over time
+
+#### Security & Access Control
+
+- Add authentication and authorization:
+  - OAuth2/OIDC (Auth0/Okta/Keycloak) or similar, with token validation in FastAPI
+  - Role-based access control for write tools (`apply_action`, `rollback_action`) and audit-log visibility
+- Add rate limiting, request size limits, and structured input validation for all endpoints.
+- Secrets management (env + secret store), key rotation, and remove any risk of logging prompts/PII.
+
+#### Observability & Operations
+
+- Add structured logging + tracing (request id / thread id), metrics (latency, tool error rates), and dashboards/alerts.
+- Add LLM observability (LangSmith or Langfuse): end-to-end traces for LangGraph runs + tool calls, prompt/version tracking, datasets, and eval runs (with PII redaction).
+- Track usage + cost: tokens in/out per request/thread, tool-call counts, estimated $ cost by model, budgets/alerts, and cost reports over time.
+- Containerize and define deployment (Docker + health probes), plus environment-specific config (dev/stage/prod).
+- Add a proper persistent datastore for sandbox ledgers and audit log (replace JSON files), with backups and migrations.
